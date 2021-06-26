@@ -2,6 +2,7 @@ import express, {Request, Response} from "express";
 export const app = express();
 
 import { createStripeCheckoutSession } from './checkout';
+import { createPaymentIntent } from './payments';
 
 app.use(express.json())
 
@@ -25,14 +26,25 @@ app.post('/test', (req: Request, res: Response) => {
 app.post(
     '/checkouts/',
     runAsync(async ({ body }: Request, res: Response) => {
-      res.send(await createStripeCheckoutSession(body.line_items));
+            res.send(await createStripeCheckoutSession(body.line_items));
+        })
+    );
+
+
+// Payment Intents API
+
+// Create a PaymentIntent
+app.post(
+    '/payments',
+    runAsync(async ({ body }: Request, res: Response) => {
+      res.send(await createPaymentIntent(body.amount));
     })
   );
-  
+
   //Catch errors with async when awaiting for responses
 
-  function runAsync(callback: Function){
-      return (req: Request, res: Response, next: NextFunction) => {
-          callback (req, res, next).catch(next);
-      }
-  }
+    function runAsync(callback: Function){
+        return (req: Request, res: Response, next: NextFunction) => {
+            callback (req, res, next).catch(next);
+        }
+    }

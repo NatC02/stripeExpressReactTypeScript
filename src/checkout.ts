@@ -1,20 +1,11 @@
 import { stripe } from "./";
 import Stripe from "stripe";
 
-//Create a stripw checkout session with items
+//Create a stripe checkout session with items
 
 export async function createStripeCheckoutSession(
   line_items: Stripe.Checkout.SessionCreateParams.LineItem[]
 ) {
-  // Example of an Item
-  // {
-  //   name: 'T-shirt',
-  //   description: 'Comfortable cotton t-shirt',
-  //   images: ['https://example.com/t-shirt.png'],
-  //   amount: 500,
-  //   currency: 'usd',
-  //   quantity: 1,
-  // }
 
   const url = process.env.WEBAPP_URL;
 
