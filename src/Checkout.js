@@ -6,7 +6,7 @@ import { useStripe } from "@stripe/react-stripe-js";
 
 summary of what is happening
 
-Using state to change the requirement of what the user 
+Using state to change the requirement of what the user needs
 
 */
 export function Checkout() {
