@@ -13,7 +13,6 @@ export async function createPaymentIntent(amount: number) {
     return paymentIntent;
 }
 
-
 /**
     Creating a Payment Intent and try to charge right away,
     must have an existing customer with a saved card payment method on file. 

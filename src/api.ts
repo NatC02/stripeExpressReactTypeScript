@@ -8,10 +8,29 @@ app.use(express.json())
 
 import cors from 'cors';
 import { NextFunction } from "express-serve-static-core";
+import { handleStripeWebhook } from "./webhooks";
+
+// Middleware //
+
+
+//allows cross origin requests
 
 app.use(cors({origin: true}));
 
-//Testing the first endoint with postman
+// Sets rawBody for webhook handling
+
+app.use(
+    express.json({
+      verify: (req, res, buffer) => (req['rawBody'] = buffer), // works for any endpoint
+    })
+  );
+  
+//Webhooks
+
+//Handle webhooks
+app.post('/hooks', runAsync(handleStripeWebhook));
+
+//Testing the first endpoint with postman
 
 app.post('/test', (req: Request, res: Response) => {
 
@@ -48,3 +67,4 @@ app.post(
             callback (req, res, next).catch(next);
         }
     }
+
