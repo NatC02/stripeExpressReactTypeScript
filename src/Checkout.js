@@ -47,8 +47,8 @@ export function Checkout() {
     <>
       <h2>Stripe Checkout</h2>
       <p>
-        Shopping-cart example scenario. Change the quantity of the products below, then
-        click checkout to open the Stripe Checkout window.
+        Shopping-cart example scenario. Change the quantity of the products
+        below, then click checkout to open the Stripe Checkout window.
       </p>
 
       <div className="product">
@@ -96,3 +96,5 @@ export function CheckoutSuccess() {
 export function CheckoutFail() {
   return <h3>Checkout unfortunately failed!</h3>;
 }
+
+export default Checkout;

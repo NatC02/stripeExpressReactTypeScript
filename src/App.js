@@ -2,6 +2,20 @@ import "./App.css";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+import Payments from "./Payments";
+
+import Checkout from "./Checkout";
+
+import CheckoutSuccess from "./CheckoutSuccess";
+
+import CheckoutFail from "./CheckoutFail";
+
+import Home from "./Home";
+
+import Customers from "./Customers";
+
+import Subscriptions from "./Subscriptions";
+
 function App() {
   return (
     <Router>
