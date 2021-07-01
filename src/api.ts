@@ -4,6 +4,8 @@ export const app = express();
 import { createStripeCheckoutSession } from './checkout';
 import { createPaymentIntent } from './payments';
 
+import { createSetupIntent, listPaymentMethods } from './customers';
+
 import { auth } from './firebase';
 
 app.use(express.json())
@@ -86,23 +88,48 @@ app.post(
             res.send(await createStripeCheckoutSession(body.line_items));
         })
     );
-
-
-// Payment Intents API
+    
+//Payment Intents API
 
 // Create a PaymentIntent
 app.post(
-    '/payments',
-    runAsync(async ({ body }: Request, res: Response) => {
-      res.send(await createPaymentIntent(body.amount));
-    })
-  );
+  '/payments',
+  runAsync(async ({ body }: Request, res: Response) => {
+    res.send(await createPaymentIntent(body.amount));
+  })
+);
 
-  //Catch errors with async when awaiting for responses
+//Catch errors with async when awaiting for responses
 
-    function runAsync(callback: Function){
-        return (req: Request, res: Response, next: NextFunction) => {
-            callback (req, res, next).catch(next);
-        }
-    }
+  function runAsync(callback: Function){
+      return (req: Request, res: Response, next: NextFunction) => {
+          callback (req, res, next).catch(next);
+      }
+  }
 
+
+
+
+// Customers and Setup Intents
+
+
+// Save a card on the customer record with a SetupIntent
+app.post(
+  '/wallet',
+  runAsync(async (req: Request, res: Response) => {
+    const user = validateUser(req);
+    const setupIntent = await createSetupIntent(user.uid);
+    res.send(setupIntent);
+  })
+);
+
+// Retrieve all cards attached to a customer
+app.get(
+  '/wallet',
+  runAsync(async (req: Request, res: Response) => {
+    const user = validateUser(req);
+
+    const wallet = await listPaymentMethods(user.uid);
+    res.send(wallet.data);
+  })
+);
