@@ -6,9 +6,11 @@ import { createPaymentIntent } from './payments';
 
 import { createSetupIntent, listPaymentMethods } from './customers';
 
+import { createSubscription } from './billing';
+
 import { auth } from './firebase';
 
-app.use(express.json())
+app.use(express.json());
 
 import cors from 'cors';
 import { NextFunction } from "express-serve-static-core";
@@ -131,5 +133,21 @@ app.get(
 
     const wallet = await listPaymentMethods(user.uid);
     res.send(wallet.data);
+  })
+);
+
+
+
+
+ // Billing and Recurring Subscriptions
+
+// Create a user and charge new Subscription
+app.post(
+  '/subscriptions/',
+  runAsync(async (req: Request, res: Response) => {
+    const user = validateUser(req);
+    const { plan, payment_method } = req.body;
+    const subscription = await createSubscription(user.uid, plan, payment_method);
+    res.send(subscription);
   })
 );
