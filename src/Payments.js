@@ -93,7 +93,10 @@ function Payments() {
 
         <hr />
 
+
         <CardElement />
+
+
         <button className="btn btn-success" type="submit">
           Pay
         </button>
