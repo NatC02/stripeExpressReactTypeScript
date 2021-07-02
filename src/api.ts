@@ -6,7 +6,7 @@ import { createPaymentIntent } from './payments';
 
 import { createSetupIntent, listPaymentMethods } from './customers';
 
-import { createSubscription } from './billing';
+import { createSubscription, cancelSubscription, listSubscriptions } from './billing';
 
 import { auth } from './firebase';
 
@@ -149,5 +149,26 @@ app.post(
     const { plan, payment_method } = req.body;
     const subscription = await createSubscription(user.uid, plan, payment_method);
     res.send(subscription);
+  })
+);
+
+// Get all subscriptions for a customer
+app.get(
+  '/subscriptions/',
+  runAsync(async (req: Request, res: Response) => {
+    const user = validateUser(req);
+
+    const subscriptions = await listSubscriptions(user.uid);
+
+    res.send(subscriptions.data);
+  })
+);
+
+// Unsubscribe or cancel a subscription
+app.patch(
+  '/subscriptions/:id',
+  runAsync(async (req: Request, res: Response) => {
+    const user = validateUser(req);
+    res.send(await cancelSubscription(user.uid, req.params.id));
   })
 );
